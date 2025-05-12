@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支部综合能力画像 - 智能分析</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            padding: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            margin: 4px;
+            border-radius: 16px;
+            font-size: 14px;
+        }
+        .tag-positive {
+            background-color: #e6f7ff;
+            color: #1890ff;
+            border: 1px solid #91d5ff;
+        }
+        .tag-negative {
+            background-color: #fff2e8;
+            color: #fa541c;
+            border: 1px solid #ffbb96;
+        }
+        .chart-container {
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        .nav-tabs .nav-link {
+            color: #1890ff;
+        }
+        .nav-tabs .nav-link.active {
+            font-weight: bold;
+            color: #096dd9;
+        }
+        .btn-primary {
+            background-color: #1890ff;
+            border-color: #1890ff;
+        }
+        .btn-primary:hover {
+            background-color: #096dd9;
+            border-color: #096dd9;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .loading.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4">支部综合能力画像 - 智能分析</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="analysisTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="labels-tab" data-bs-toggle="tab" data-bs-target="#labels" type="button" role="tab" aria-controls="labels" aria-selected="true">支部标签</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="ai-tab" data-bs-toggle="tab" data-bs-target="#ai" type="button" role="tab" aria-controls="ai" aria-selected="false">AI智能分析</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="comparison-tab" data-bs-toggle="tab" data-bs-target="#comparison" type="button" role="tab" aria-controls="comparison" aria-selected="false">多维度对比</button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content mt-3" id="analysisTabsContent">
+                    <!-- 支部标签 -->
+                    <div class="tab-pane fade show active" id="labels" role="tabpanel" aria-labelledby="labels-tab">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>支部特征标签</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="labelsContainer">
+                                    <div class="loading" id="labelsLoading">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">加载中...</span>
+                                        </div>
+                                        <p class="mt-2">正在计算标签...</p>
+                                    </div>
+                                    <div id="labelsContent"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI智能分析 -->
+                    <div class="tab-pane fade" id="ai" role="tabpanel" aria-labelledby="ai-tab">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5>支部综合分析</h5>
+                                <button class="btn btn-primary" id="generateAnalysisBtn">生成分析</button>
+                            </div>
+                            <div class="card-body">
+                                <div id="analysisContainer">
+                                    <div class="loading" id="analysisLoading">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">加载中...</span>
+                                        </div>
+                                        <p class="mt-2">正在生成AI分析...</p>
+                                    </div>
+                                    
+                                    <div id="analysisContent">
+                                        <p id="evaluationText" class="lead">点击"生成分析"按钮获取AI分析结果</p>
+                                        
+                                        <h6 class="mt-4">优势分析</h6>
+                                        <ul id="advantagesList">
+                                            <li class="text-muted">暂无数据</li>
+                                        </ul>
+                                        
+                                        <h6 class="mt-4">改进建议</h6>
+                                        <ul id="suggestionsList">
+                                            <li class="text-muted">暂无数据</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 多维度对比 -->
+                    <div class="tab-pane fade" id="comparison" role="tabpanel" aria-labelledby="comparison-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>雷达图对比</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="radarChartContainer" class="chart-container">
+                                            <canvas id="radarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>柱状图对比</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="barChartContainer" class="chart-container">
+                                            <canvas id="barChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-3">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5>对比分析结论</h5>
+                                <button class="btn btn-primary" id="generateComparisonBtn">生成对比分析</button>
+                            </div>
+                            <div class="card-body">
+                                <div id="comparisonContainer">
+                                    <div class="loading" id="comparisonLoading">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">加载中...</span>
+                                        </div>
+                                        <p class="mt-2">正在生成对比分析...</p>
+                                    </div>
+                                    
+                                    <div id="comparisonContent">
+                                        <p id="conclusionText" class="lead">点击"生成对比分析"按钮获取AI分析结果</p>
+                                        
+                                        <h6 class="mt-4">相对优势</h6>
+                                        <ul id="advantagesComparisonList">
+                                            <li class="text-muted">暂无数据</li>
+                                        </ul>
+                                        
+                                        <h6 class="mt-4">提升建议</h6>
+                                        <ul id="improvementsList">
+                                            <li class="text-muted">暂无数据</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 模拟数据
+        const branchData = {
+            name: "测试支部",
+            scores: {
+                organization: 85,
+                political: 75,
+                business: 90,
+                masses: 80,
+                discipline: 70
+            }
+        };
+        
+        const comparisonData = {
+            average: {
+                organization: 75,
+                political: 70,
+                business: 75,
+                masses: 70,
+                discipline: 75
+            },
+            target: {
+                organization: 90,
+                political: 90,
+                business: 90,
+                masses: 90,
+                discipline: 90
+            }
+        };
+        
+        // 初始化图表
+        function initCharts() {
+            // 雷达图
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            const radarChart = new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['组织建设', '思想政治', '业务工作', '群众工作', '党风廉政'],
+                    datasets: [
+                        {
+                            label: '当前支部',
+                            data: [
+                                branchData.scores.organization,
+                                branchData.scores.political,
+                                branchData.scores.business,
+                                branchData.scores.masses,
+                                branchData.scores.discipline
+                            ],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
+                        },
+                        {
+                            label: '平均水平',
+                            data: [
+                                comparisonData.average.organization,
+                                comparisonData.average.political,
+                                comparisonData.average.business,
+                                comparisonData.average.masses,
+                                comparisonData.average.discipline
+                            ],
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(75, 192, 192, 1)'
+                        },
+                        {
+                            label: '目标水平',
+                            data: [
+                                comparisonData.target.organization,
+                                comparisonData.target.political,
+                                comparisonData.target.business,
+                                comparisonData.target.masses,
+                                comparisonData.target.discipline
+                            ],
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            pointBackgroundColor: 'rgba(255, 159, 64, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(255, 159, 64, 1)'
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+            
+            // 柱状图
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            const barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['组织建设', '思想政治', '业务工作', '群众工作', '党风廉政'],
+                    datasets: [
+                        {
+                            label: '当前支部',
+                            data: [
+                                branchData.scores.organization,
+                                branchData.scores.political,
+                                branchData.scores.business,
+                                branchData.scores.masses,
+                                branchData.scores.discipline
+                            ],
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                        },
+                        {
+                            label: '平均水平',
+                            data: [
+                                comparisonData.average.organization,
+                                comparisonData.average.political,
+                                comparisonData.average.business,
+                                comparisonData.average.masses,
+                                comparisonData.average.discipline
+                            ],
+                            backgroundColor: 'rgba(75, 192, 192, 0.7)'
+                        },
+                        {
+                            label: '目标水平',
+                            data: [
+                                comparisonData.target.organization,
+                                comparisonData.target.political,
+                                comparisonData.target.business,
+                                comparisonData.target.masses,
+                                comparisonData.target.discipline
+                            ],
+                            backgroundColor: 'rgba(255, 159, 64, 0.7)'
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 获取支部标签
+        async function fetchLabels() {
+            document.getElementById('labelsLoading').classList.add('active');
+            document.getElementById('labelsContent').innerHTML = '';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/branch-portrait', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ scores: branchData.scores })
+                });
+                
+                const data = await response.json();
+                
+                if (data.labels && data.labels.length > 0) {
+                    const labelsHtml = data.labels.map(label => {
+                        const tagClass = label.type === 'positive' ? 'tag-positive' : 'tag-negative';
+                        return `<span class="tag ${tagClass}">${label.name}</span>`;
+                    }).join('');
+                    
+                    document.getElementById('labelsContent').innerHTML = labelsHtml;
+                } else {
+                    document.getElementById('labelsContent').innerHTML = '<p class="text-muted">暂无标签</p>';
+                }
+            } catch (error) {
+                console.error('获取标签失败:', error);
+                document.getElementById('labelsContent').innerHTML = '<p class="text-danger">获取标签失败，请稍后再试</p>';
+            } finally {
+                document.getElementById('labelsLoading').classList.remove('active');
+            }
+        }
+        
+        // 生成AI分析
+        async function generateAnalysis() {
+            document.getElementById('analysisLoading').classList.add('active');
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/ai-analysis', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ branchData })
+                });
+                
+                const data = await response.json();
+                
+                document.getElementById('evaluationText').textContent = data.evaluation || '暂无评估结果';
+                
+                if (data.advantages && data.advantages.length > 0) {
+                    const advantagesHtml = data.advantages.map(item => `<li>${item}</li>`).join('');
+                    document.getElementById('advantagesList').innerHTML = advantagesHtml;
+                } else {
+                    document.getElementById('advantagesList').innerHTML = '<li class="text-muted">暂无数据</li>';
+                }
+                
+                if (data.suggestions && data.suggestions.length > 0) {
+                    const suggestionsHtml = data.suggestions.map(item => `<li>${item}</li>`).join('');
+                    document.getElementById('suggestionsList').innerHTML = suggestionsHtml;
+                } else {
+                    document.getElementById('suggestionsList').innerHTML = '<li class="text-muted">暂无数据</li>';
+                }
+            } catch (error) {
+                console.error('生成分析失败:', error);
+                document.getElementById('evaluationText').textContent = 'AI分析服务暂时不可用，请稍后再试';
+                document.getElementById('advantagesList').innerHTML = '<li class="text-muted">暂无数据</li>';
+                document.getElementById('suggestionsList').innerHTML = '<li class="text-muted">暂无数据</li>';
+            } finally {
+                document.getElementById('analysisLoading').classList.remove('active');
+            }
+        }
+        
+        // 生成对比分析
+        async function generateComparisonAnalysis() {
+            document.getElementById('comparisonLoading').classList.add('active');
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/comparison-analysis', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ currentBranch: branchData, comparisonData })
+                });
+                
+                const data = await response.json();
+                
+                document.getElementById('conclusionText').textContent = data.conclusion || '暂无分析结论';
+                
+                if (data.advantages && data.advantages.length > 0) {
+                    const advantagesHtml = data.advantages.map(item => `<li>${item}</li>`).join('');
+                    document.getElementById('advantagesComparisonList').innerHTML = advantagesHtml;
+                } else {
+                    document.getElementById('advantagesComparisonList').innerHTML = '<li class="text-muted">暂无数据</li>';
+                }
+                
+                if (data.improvements && data.improvements.length > 0) {
+                    const improvementsHtml = data.improvements.map(item => `<li>${item}</li>`).join('');
+                    document.getElementById('improvementsList').innerHTML = improvementsHtml;
+                } else {
+                    document.getElementById('improvementsList').innerHTML = '<li class="text-muted">暂无数据</li>';
+                }
+            } catch (error) {
+                console.error('生成对比分析失败:', error);
+                document.getElementById('conclusionText').textContent = '对比分析服务暂时不可用，请稍后再试';
+                document.getElementById('advantagesComparisonList').innerHTML = '<li class="text-muted">暂无数据</li>';
+                document.getElementById('improvementsList').innerHTML = '<li class="text-muted">暂无数据</li>';
+            } finally {
+                document.getElementById('comparisonLoading').classList.remove('active');
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化图表
+            initCharts();
+            
+            // 获取标签
+            fetchLabels();
+            
+            // 绑定事件
+            document.getElementById('generateAnalysisBtn').addEventListener('click', generateAnalysis);
+            document.getElementById('generateComparisonBtn').addEventListener('click', generateComparisonAnalysis);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+手动启动项目的方法
+以下是手动启动项目的详细步骤：
+
+方法一：使用批处理文件（推荐）
+使用start.bat文件：
+在项目根目录下找到start.bat文件
+双击该文件或在命令行中运行start.bat
+这将自动启动后端服务器并打开前端页面
+方法二：分步启动
+启动后端服务器：
+打开命令提示符或PowerShell
+导航到项目根目录：cd 路径\到\党支部数据展示系统\branch_show
+运行命令：node server.js
+看到"Server is running on port 3001"表示服务器启动成功
+打开前端页面：
+在文件资源管理器中导航到项目的build目录
+双击index.html文件，或右键选择"打开方式"→选择浏览器
+前端页面将在浏览器中打开
+方法三：使用Electron（如果已配置）
+启动Electron应用：
+打开命令提示符或PowerShell
+导航到项目根目录：cd 路径\到\党支部数据展示系统\branch_show
+运行命令：npm run electron
+这将启动一个独立的应用窗口，包含前端页面和后端服务
+注意事项
+端口占用问题：
+如果启动时出现"EADDRINUSE: address already in use :::3001"错误，说明端口3001已被占用
+可以通过以下方式解决：
+找到并关闭占用端口的进程：netstat -ano | findstr :3001，然后使用taskkill /PID 进程ID /F关闭
+或修改server.js中的端口号（第78行左右）：const PORT = process.env.PORT || 3002;
+依赖问题：
+如果遇到依赖相关错误，可以尝试重新安装依赖：npm install
+数据上传目录：
+确保项目根目录下存在uploads文件夹，用于存储上传的Excel文件
+如果不存在，系统会自动创建，但最好手动创建以避免权限问题
+浏览器兼容性：
+推荐使用Chrome或Edge浏览器打开前端页面，以获得最佳体验
+通过以上方法，您可以随时手动启动项目，并在需要时进行调试和修改。如果您对项目进行了修改，可能需要重新构建前端（npm run build）或重启后端服务器。

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- 标题 -->
+  <text x="400" y="40" font-family="Arial" font-size="24" text-anchor="middle" font-weight="bold">支部综合能力画像智能分析区域设计</text>
+  
+  <!-- 整体布局 -->
+  <rect x="50" y="70" width="700" height="500" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2" rx="10" ry="10"/>
+  
+  <!-- 标题栏 -->
+  <rect x="50" y="70" width="700" height="50" fill="#e9ecef" stroke="#dee2e6" stroke-width="1" rx="10" ry="10"/>
+  <text x="400" y="105" font-family="Arial" font-size="20" text-anchor="middle" font-weight="bold">智能分析与多维度对比</text>
+  
+  <!-- 左侧：AI智能分析 -->
+  <g transform="translate(70, 140)">
+    <rect x="0" y="0" width="320" height="410" fill="white" stroke="#dee2e6" stroke-width="1" rx="5" ry="5"/>
+    <text x="160" y="30" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold">AI智能分析</text>
+    
+    <!-- AI分析内容 -->
+    <rect x="20" y="50" width="280" height="100" fill="#f1f8ff" stroke="#c8e1ff" stroke-width="1" rx="5" ry="5"/>
+    <text x="30" y="70" font-family="Arial" font-size="14" font-weight="bold">支部综合能力评估</text>
+    <text x="30" y="95" font-family="Arial" font-size="12">基于五个维度的综合分析，该支部整体表现良好，</text>
+    <text x="30" y="115" font-family="Arial" font-size="12">组织建设和业务工作能力突出，思想政治工作有</text>
+    <text x="30" y="135" font-family="Arial" font-size="12">待加强。</text>
+    
+    <!-- 优势分析 -->
+    <rect x="20" y="170" width="280" height="100" fill="#f0fff4" stroke="#c6f6d5" stroke-width="1" rx="5" ry="5"/>
+    <text x="30" y="190" font-family="Arial" font-size="14" font-weight="bold">支部优势分析</text>
+    <text x="30" y="215" font-family="Arial" font-size="12">1. 组织生活规范，制度执行良好</text>
+    <text x="30" y="235" font-family="Arial" font-size="12">2. 业务工作完成质量高，创新能力强</text>
+    <text x="30" y="255" font-family="Arial" font-size="12">3. 群众服务质量好，满意度高</text>
+    
+    <!-- 改进建议 -->
+    <rect x="20" y="290" width="280" height="100" fill="#fff5f5" stroke="#fed7d7" stroke-width="1" rx="5" ry="5"/>
+    <text x="30" y="310" font-family="Arial" font-size="14" font-weight="bold">改进建议</text>
+    <text x="30" y="335" font-family="Arial" font-size="12">1. 加强理论学习，提高学习质量和深度</text>
+    <text x="30" y="355" font-family="Arial" font-size="12">2. 完善意识形态工作机制</text>
+    <text x="30" y="375" font-family="Arial" font-size="12">3. 加强党风廉政建设，强化监督执行</text>
+  </g>
+  
+  <!-- 右侧：多维度对比 -->
+  <g transform="translate(410, 140)">
+    <rect x="0" y="0" width="320" height="410" fill="white" stroke="#dee2e6" stroke-width="1" rx="5" ry="5"/>
+    <text x="160" y="30" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold">多维度对比</text>
+    
+    <!-- 对比图表区域 -->
+    <rect x="20" y="50" width="280" height="160" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="5" ry="5"/>
+    
+    <!-- 柱状图示意 -->
+    <rect x="40" y="70" width="30" height="120" fill="#4299e1" stroke="#2b6cb0" stroke-width="1"/>
+    <rect x="80" y="100" width="30" height="90" fill="#4299e1" stroke="#2b6cb0" stroke-width="1"/>
+    <rect x="120" y="60" width="30" height="130" fill="#4299e1" stroke="#2b6cb0" stroke-width="1"/>
+    <rect x="160" y="110" width="30" height="80" fill="#4299e1" stroke="#2b6cb0" stroke-width="1"/>
+    <rect x="200" y="130" width="30" height="60" fill="#4299e1" stroke="#2b6cb0" stroke-width="1"/>
+    <rect x="240" y="90" width="30" height="100" fill="#4299e1" stroke="#2b6cb0" stroke-width="1"/>
+    
+    <line x1="30" y1="190" x2="280" y2="190" stroke="#718096" stroke-width="1"/>
+    <text x="55" y="205" font-family="Arial" font-size="10" text-anchor="middle">本支部</text>
+    <text x="95" y="205" font-family="Arial" font-size="10" text-anchor="middle">平均值</text>
+    <text x="135" y="205" font-family="Arial" font-size="10" text-anchor="middle">最高值</text>
+    <text x="175" y="205" font-family="Arial" font-size="10" text-anchor="middle">去年</text>
+    <text x="215" y="205" font-family="Arial" font-size="10" text-anchor="middle">前年</text>
+    <text x="255" y="205" font-family="Arial" font-size="10" text-anchor="middle">目标值</text>
+    
+    <!-- 雷达图示意 -->
+    <g transform="translate(150, 300)">
+      <polygon points="0,-80 76,-24 47,65 -47,65 -76,-24" 
+               fill="rgba(66,153,225,0.2)" stroke="rgba(66,153,225,0.8)" stroke-width="2"/>
+      <polygon points="0,-60 57,-18 35,49 -35,49 -57,-18" 
+               fill="rgba(237,137,54,0.2)" stroke="rgba(237,137,54,0.8)" stroke-width="2"/>
+      
+      <line x1="0" y1="0" x2="0" y2="-90" stroke="#718096" stroke-width="1"/>
+      <line x1="0" y1="0" x2="86" y2="-28" stroke="#718096" stroke-width="1"/>
+      <line x1="0" y1="0" x2="53" y2="73" stroke="#718096" stroke-width="1"/>
+      <line x1="0" y1="0" x2="-53" y2="73" stroke="#718096" stroke-width="1"/>
+      <line x1="0" y1="0" x2="-86" y2="-28" stroke="#718096" stroke-width="1"/>
+      
+      <circle cx="0" cy="-80" r="3" fill="#4299e1"/>
+      <circle cx="76" cy="-24" r="3" fill="#4299e1"/>
+      <circle cx="47" cy="65" r="3" fill="#4299e1"/>
+      <circle cx="-47" cy="65" r="3" fill="#4299e1"/>
+      <circle cx="-76" cy="-24" r="3" fill="#4299e1"/>
+      
+      <circle cx="0" cy="-60" r="3" fill="#ed8936"/>
+      <circle cx="57" cy="-18" r="3" fill="#ed8936"/>
+      <circle cx="35" cy="49" r="3" fill="#ed8936"/>
+      <circle cx="-35" cy="49" r="3" fill="#ed8936"/>
+      <circle cx="-57" cy="-18" r="3" fill="#ed8936"/>
+    </g>
+    
+    <!-- 图例 -->
+    <rect x="20" y="370" width="12" height="12" fill="rgba(66,153,225,0.8)"/>
+    <text x="40" y="380" font-family="Arial" font-size="12">本支部</text>
+    
+    <rect x="100" y="370" width="12" height="12" fill="rgba(237,137,54,0.8)"/>
+    <text x="120" y="380" font-family="Arial" font-size="12">平均水平</text>
+    
+    <rect x="200" y="370" width="12" height="12" fill="rgba(72,187,120,0.8)"/>
+    <text x="220" y="380" font-family="Arial" font-size="12">目标水平</text>
+  </g>
+</svg>
